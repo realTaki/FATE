@@ -163,13 +163,15 @@ Guava Beta APIs, persisted objects or application workloads.
 
 No deployment, release, permission, credential, scanner configuration,
 force push or unrelated dependency changes. Existing drafts remain intact.
-Source-only composition with the existing Commons IO and Spring drafts
-required explicit context resolution for adjacent Spring/Guava property
-lines. The intended combined tree preserves all three pins and tests/docs,
-but this is **not an automatically clean merge** or combined runtime pass.
-No integration commit/ref was created and no old draft was rewritten; if
-Spring lands first, refresh/resolve this draft against the new base before
-its separately approved merge.
+The historical 13:12 source-only composition of the OLD PR23 head with
+Commons IO and Spring required explicit context resolution for adjacent
+Spring/Guava property lines. That receipt proves the then-current combined
+pins/tests/docs only, not the new full combined test/doc tree. This update
+keeps the parent POM pin/blob unchanged, so the prospective property-context
+warning remains; no combined runtime or automatically clean merge is claimed.
+No new integration commit/ref or all-PR matrix was created. If Spring lands
+first, refresh/resolve this draft against the new base before its separately
+approved merge.
 
 GitHub CI must be reported as observed; local tests do not make CI green.
 Merge remains separately decided.
