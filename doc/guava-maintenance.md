@@ -182,3 +182,7 @@ Merge remains separately decided.
 - [Guava compatibility policy](https://github.com/google/guava/wiki/Compatibility)
 - [Official 33.7.2-jre POM](https://repo.maven.apache.org/maven2/com/google/guava/guava/33.7.2-jre/guava-33.7.2-jre.pom)
 - [Official dependency parent](https://repo.maven.apache.org/maven2/com/google/guava/guava-parent/33.7.2-jre/guava-parent-33.7.2-jre.pom)
+
+## 2026-11-01 approved default-branch composition
+
+The approved Spring and Jackson repairs are now on master. The adjacent Spring/Guava POM conflict was explicitly resolved by preserving Spring 5.2.22.RELEASE, Guava 33.7.2-jre and all already merged default-branch pins. This source-only merge leaves the accepted twelve-test Guava test blob unchanged; its original Java 8 evidence is retained. It establishes the current source union, not a full combined-reactor runtime result.
