@@ -55,8 +55,10 @@ Temurin 1.8.0_504 compiled **31 complete unchanged production retry/pipe
 sources** and six actual project protobuf sources against the old Guava
 27 API. It ran the candidate with all five declared direct transitive
 artifacts, unchanged protobuf 3.6.1, and unchanged gRPC 1.16.1 modules.
-No production stubs or AST-only execution. Nine JUnit 4.12 tests passed,
-including an aggregate `Enclosed` discovery run:
+No production stubs or AST-only execution. The original nine JUnit 4.12 tests passed. A later same-branch update adds
+three real in-process RPC lifecycle tests: the current aggregate `Enclosed`
+run passes **12/12**. The original 13:12 receipt and baseline diagnostic
+remain historical evidence, not overwritten. Original controls:
 
 1. Actual Retryer predicates, eventual success, exception propagation and
    maximum-attempt stop behavior.
@@ -104,6 +106,44 @@ also resolve all 102 Guava method/field references across six old gRPC
 JARs, including inherited Java 8 Future methods; this supports but does not
 replace the executable checks.
 
+## Additional actual old-gRPC in-process lifecycle validation
+
+The three added controls run **real grpc-core 1.16.1**
+`InProcessServerBuilder`, `InProcessChannelBuilder`, managed channel and
+in-process transport. They use `ServerCalls.asyncUnaryCall` and
+`ClientCalls.futureUnaryCall` with actual FATE `BasicMeta.Endpoint` messages,
+not a fake ClientCall or production replacement stub. They verify:
+
+- Unary response preservation and server `INVALID_ARGUMENT` propagation.
+- Client future cancellation reaching the real server Context.
+- A 400 ms deadline producing `DEADLINE_EXCEEDED` and cancelling the real
+  server Context.
+- Channel and server termination within two seconds after every fixture.
+
+Each fixture uses a unique in-memory registry name, no socket/port,
+external service, DNS, TLS or Netty native transport. The test JVM has
+64 MiB heap / 2 MiB stack / 25 s process limit. The three new tests passed,
+then one aggregate of unchanged original nine plus new three passed12/12;
+no old-version/security matrix was repeated.
+
+The default `statsEnabled` and `tracingEnabled` flags on both actual builders
+are observed true, never disabled or replaced to bypass dependencies.
+Upstream in-process constructors themselves leave started/finished RPC
+recording flags false; those exact defaults are preserved. This does not
+claim a metrics/tracing exporter or recording acceptance test.
+
+The originally declared gRPC compile/runtime artifacts
+`io.opencensus:opencensus-api:0.12.3`,
+`io.opencensus:opencensus-contrib-grpc-metrics:0.12.3`, and
+`com.google.code.gson:gson:2.7` were obtained from official Maven Central
+with published SHA-1 and local SHA-256 verification. Their required
+non-test transitives are already represented by the selected Guava,
+gRPC-context and annotation artifacts. No project POM/dependency/runtime
+pin, framework or installed tool changed; no module/tracing stub, setting
+change or optional external exporter was added. This closes the specific
+previously untested native in-process channel/server compatibility boundary,
+not the entire gRPC protocol/network or FATE application boundary.
+
 ## Limits and exposure
 
 No direct ObjectInputStream, FileBackedOutputStream
@@ -115,8 +155,8 @@ not by creating or exposing host files.
 
 The cache control is a representative real API policy test, not live gRPC
 channel-cache creation, TLS, removal-shutdown or production lifecycle
-acceptance. Old gRPC/protobuf memory controls are not full transport/server
-or interoperability acceptance. No full Maven/reactor/application/Spring,
+acceptance. The new real in-process channel/server controls are not real-network, TLS,
+native-Netty, exporter, complete protocol or interoperability acceptance. No full Maven/reactor/application/Spring,
 DB/native/training/deployment matrix was run; no Maven/JDK/framework was
 installed. Targeted compatibility is not universal compatibility for all
 Guava Beta APIs, persisted objects or application workloads.

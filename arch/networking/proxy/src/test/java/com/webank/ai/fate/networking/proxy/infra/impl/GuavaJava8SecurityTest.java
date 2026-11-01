@@ -96,6 +96,69 @@ public class GuavaJava8SecurityTest {
             assertTrue(cancelled.cancel(true));assertTrue(pending.cancelled);
         }
     }
+    /** Real grpc-core in-process transport; no fake ClientCall or external socket. */
+    public static class InProcessRpcContracts {
+        @Test public void actualInProcessUnaryResponseAndErrorKeepProtoAndStatus() throws Exception {
+            try (RpcHarness rpc=new RpcHarness()) {
+                BasicMeta.Endpoint response=rpc.call("Echo",CallOptions.DEFAULT).get(2,TimeUnit.SECONDS);
+                assertEquals(rpc.request,response);assertEquals(1,rpc.echoes.get());
+                try {rpc.call("Error",CallOptions.DEFAULT).get(2,TimeUnit.SECONDS);fail("expected service error");}
+                catch(ExecutionException expected){assertEquals(Status.Code.INVALID_ARGUMENT,Status.fromThrowable(expected.getCause()).getCode());}
+            }
+        }
+        @Test public void actualInProcessCancellationReachesServerContextAndShutsDown() throws Exception {
+            try (RpcHarness rpc=new RpcHarness()) {
+                ListenableFuture<BasicMeta.Endpoint> pending=rpc.call("Hold",CallOptions.DEFAULT);
+                assertTrue(rpc.entered.await(2,TimeUnit.SECONDS));assertTrue(pending.cancel(true));
+                assertTrue(pending.isCancelled());assertTrue(rpc.cancelled.await(2,TimeUnit.SECONDS));
+            }
+        }
+        @Test public void actualInProcessDeadlineReachesServerContextAndShutsDown() throws Exception {
+            try (RpcHarness rpc=new RpcHarness()) {
+                ListenableFuture<BasicMeta.Endpoint> pending=rpc.call("Hold",CallOptions.DEFAULT.withDeadlineAfter(400,TimeUnit.MILLISECONDS));
+                assertTrue(rpc.entered.await(2,TimeUnit.SECONDS));
+                try {pending.get(2,TimeUnit.SECONDS);fail("expected deadline");}
+                catch(ExecutionException expected){assertEquals(Status.Code.DEADLINE_EXCEEDED,Status.fromThrowable(expected.getCause()).getCode());}
+                assertTrue(rpc.cancelled.await(2,TimeUnit.SECONDS));
+            }
+        }
+    }
+    private static final class RpcHarness implements AutoCloseable {
+        static final String SERVICE="maintenance.GuavaJava8";
+        final BasicMeta.Endpoint request=BasicMeta.Endpoint.newBuilder().setIp("127.0.0.1").setPort(1234).build();
+        final AtomicInteger echoes=new AtomicInteger();
+        final CountDownLatch entered=new CountDownLatch(1),cancelled=new CountDownLatch(1);
+        final Map<String,MethodDescriptor<BasicMeta.Endpoint,BasicMeta.Endpoint>> methods=new HashMap<>();
+        final Server server;final ManagedChannel channel;
+        RpcHarness() throws Exception {
+            for(String name:Arrays.asList("Echo","Error","Hold"))methods.put(name,MethodDescriptor.<BasicMeta.Endpoint,BasicMeta.Endpoint>newBuilder()
+                .setType(MethodDescriptor.MethodType.UNARY).setFullMethodName(MethodDescriptor.generateFullMethodName(SERVICE,name))
+                .setRequestMarshaller(ProtoUtils.marshaller(BasicMeta.Endpoint.getDefaultInstance()))
+                .setResponseMarshaller(ProtoUtils.marshaller(BasicMeta.Endpoint.getDefaultInstance())).build());
+            ServerServiceDefinition service=ServerServiceDefinition.builder(SERVICE)
+                .addMethod(methods.get("Echo"),io.grpc.stub.ServerCalls.asyncUnaryCall((value,observer)->{echoes.incrementAndGet();observer.onNext(value);observer.onCompleted();}))
+                .addMethod(methods.get("Error"),io.grpc.stub.ServerCalls.asyncUnaryCall((value,observer)->observer.onError(Status.INVALID_ARGUMENT.withDescription("inert fixture").asRuntimeException())))
+                .addMethod(methods.get("Hold"),io.grpc.stub.ServerCalls.asyncUnaryCall((value,observer)->{
+                    Context.current().addListener(context->cancelled.countDown(),MoreExecutors.directExecutor());entered.countDown();
+                })).build();
+            String name="guava-java8-"+UUID.randomUUID();
+            io.grpc.inprocess.InProcessServerBuilder sb=io.grpc.inprocess.InProcessServerBuilder.forName(name).directExecutor().addService(service);
+            io.grpc.inprocess.InProcessChannelBuilder cb=io.grpc.inprocess.InProcessChannelBuilder.forName(name).directExecutor();
+            // Observe, never modify/disable, upstream stats/tracing module defaults.
+            assertEquals(Boolean.TRUE,field(sb,"statsEnabled"));assertEquals(Boolean.TRUE,field(sb,"tracingEnabled"));
+            assertEquals(Boolean.TRUE,field(cb,"statsEnabled"));assertEquals(Boolean.TRUE,field(cb,"tracingEnabled"));
+            server=sb.build().start();
+            try {channel=cb.build();}catch(Throwable failure){server.shutdownNow();assertTrue(server.awaitTermination(2,TimeUnit.SECONDS));throw failure;}
+        }
+        ListenableFuture<BasicMeta.Endpoint> call(String name,CallOptions options){
+            return ClientCalls.futureUnaryCall(channel.newCall(methods.get(name),options),request);
+        }
+        @Override public void close() throws Exception {
+            channel.shutdownNow();server.shutdownNow();
+            assertTrue("in-process channel must terminate",channel.awaitTermination(2,TimeUnit.SECONDS));
+            assertTrue("in-process server must terminate",server.awaitTermination(2,TimeUnit.SECONDS));
+        }
+    }
     /** Controlled in-memory transport fixture, not a replacement production gRPC implementation. */
     private static final class LocalCall extends ClientCall<BasicMeta.Endpoint,BasicMeta.Endpoint> {
         final BasicMeta.Endpoint result;final boolean pending;Listener<BasicMeta.Endpoint> listener;BasicMeta.Endpoint sent;int requests;boolean cancelled;
