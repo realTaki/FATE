@@ -35,7 +35,7 @@
 
         <jackson.version>2.12.7.1</jackson.version>
 
-        <mysql.connector.version>8.0.28</mysql.connector.version>
+        <mysql.connector.version>8.2.0</mysql.connector.version>
         <mybatis-generator-plugin.version>1.3.7</mybatis-generator-plugin.version>
         <protobuf-maven-plugin.version>0.6.1</protobuf-maven-plugin.version>
 
@@ -56,8 +56,8 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.connector.version}</version>
         </dependency>
 
