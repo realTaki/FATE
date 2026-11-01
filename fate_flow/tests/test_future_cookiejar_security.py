@@ -88,7 +88,9 @@ class FutureCookiejarSecurityTest(unittest.TestCase):
     def test_observed_python3_builtins_are_standard_library(self):
         # FATE's three observed builtins imports are stdlib on Python 3;
         # they are not evidence of future.backports usage or exploitability.
-        self.assertEqual("built-in", builtins.__spec__.origin)
+        self.assertIn("builtins", sys.builtin_module_names)
+        self.assertIs(builtins, sys.modules["builtins"])
+        self.assertIs(builtins.dict, dict)
         self.assertIn(type({}).__name__, dir(builtins))
         self.assertIn(type("synthetic").__name__, dir(builtins))
 
