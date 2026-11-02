@@ -44,7 +44,7 @@ class ProcessCompatibility(unittest.TestCase):
         process = subprocess.Popen(
             [sys.executable, "-c",
              "import time; print('ready',flush=True); time.sleep(30)", self.marker],
-            stdout=subprocess.PIPE, text=True)
+            stdout=subprocess.PIPE, universal_newlines=True)
         self.owned.append(process)
         self.assertTrue(select.select([process.stdout], [], [], 5)[0])
         self.assertEqual(process.stdout.readline().strip(), "ready")
@@ -103,11 +103,11 @@ class ProcessCompatibility(unittest.TestCase):
                 "signal.signal(signal.SIGCHLD,signal.SIG_IGN); "
                 "p=subprocess.Popen([sys.executable,'-c',"
                 "\"import time; print('ready',flush=True); time.sleep(30)\",sys.argv[1]],"
-                "stdout=subprocess.PIPE,text=True); "
+                "stdout=subprocess.PIPE,universal_newlines=True); "
                 "assert p.stdout.readline().strip()=='ready'; "
                 "print(json.dumps({'child':p.pid}),flush=True); time.sleep(30)")
         parent = subprocess.Popen([sys.executable, "-c", code, self.marker],
-                                  stdout=subprocess.PIPE, text=True)
+                                  stdout=subprocess.PIPE, universal_newlines=True)
         self.owned.append(parent)
         self.assertTrue(select.select([parent.stdout], [], [], 5)[0])
         child_pid = json.loads(parent.stdout.readline())["child"]
