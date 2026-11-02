@@ -26,6 +26,11 @@ PGO, `make install`, global pip, OS package installation, or default interpreter
 changes. Only the already-recorded private `sinpi` to `_Py36_sinpi` C-helper
 rename was applied to avoid the current glibc name collision; its math logic
 is unchanged. No Python-version alias, stdlib shim, or application patch was used.
+After the initial default-optimization build exposed the host-tool limitation
+below, the same tree was cleaned and rebuilt once with `CFLAGS='-O0 -g0'`.
+The effective flags end with `-O0 -g0`, overriding configure's earlier `-O3`.
+No additional source changes were made; this changes only the temporary test
+tool's compiler configuration, not FATE or its production runtime.
 This EOL interpreter is a temporary compatibility fixture, not a production
 runtime recommendation. Its normal math, ctypes, struct, binascii, hashlib,
 JSON, and SSL imports were probed; this is not complete CPython acceptance.
@@ -43,7 +48,8 @@ globally. Both Cryptodome versions automatically selected their real upstream
 CFFI backend; the test asserts it rather than forcing or mocking a backend.
 
 **Nine tests pass, with zero failures or skips, on both 3.6.6 and 3.19.1** using
-actual native CPython 3.6.15 (three separate runs per version). They cover:
+actual native CPython 3.6.15 (three initial CFFI runs and one final rebuilt-tool
+run per version, with identical focused test bytes). They cover:
 
 - the real `Random.new().read` callback and `RSA.generate` imports;
 - unchanged FATE `RsaEncrypt.generate_key` default 1024-bit and explicit
@@ -76,11 +82,13 @@ An exploratory run without FATE's declared CFFI dependencies hit a native
 CPython 3.6/GCC `ctypes._reset_cache` segmentation fault on baseline import,
 before the focused tests. This resembles the known upstream
 [CPython issue 89863](https://github.com/python/cpython/issues/89863).
-It is retained as a fixture limitation, not counted as a package regression
-test failure or silently hidden. No import reordering or runtime source patch
-was used to suppress it. The acceptance above uses the actual already-declared
-CFFI backend, which is explicitly asserted for both versions. The fixture is
-not qualified for arbitrary ctypes-backed tests.
+The initial failure logs are retained, not counted as a package regression
+test failure or silently hidden. The source-unchanged `-O0 -g0` rebuild then
+passed an ordinary ctypes import/callback check and the original focused test
+on both versions. No import reordering or additional runtime source patch was
+used. The project acceptance above still uses the actual already-declared
+CFFI backend, explicitly asserted for both versions. This is not a full ctypes
+or CPython test-suite qualification.
 
 Full FATE requirements installation, the complete application/module import,
 training, services, deployment, and the full CPython suite were not run. Other
