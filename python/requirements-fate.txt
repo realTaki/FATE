@@ -20,7 +20,7 @@ opentelemetry-api
 opentelemetry-sdk
 opentelemetry-exporter-otlp-proto-grpc
 mmh3==3.0.0
-protobuf==4.24.4
+protobuf==5.29.6
 grpcio==1.62.1
 safetensors==0.4.1
 scipy

@@ -35,7 +35,7 @@ install_requires = [
     "beautifultable",
     "requests<2.26.0",
     "grpcio==1.62.1",
-    "protobuf==4.24.4",
+    "protobuf==5.29.6",
     "rich==13.7.1",
     "omegaconf",
     "opentelemetry-api",
