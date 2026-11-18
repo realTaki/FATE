@@ -9,7 +9,7 @@ click
 ruamel-yaml==0.16
 numpy<2.0.0
 pandas
-transformers==4.37.2
+transformers==5.10.1
 accelerate==0.27.2
 beautifultable
 requests<2.26.0

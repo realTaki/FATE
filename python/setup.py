@@ -30,7 +30,7 @@ install_requires = [
     "scikit-learn==1.4.1.post1",
     "numpy<2.0.0",
     "pandas",
-    "transformers==4.37.2",
+    "transformers==5.10.1",
     "accelerate==0.27.2",
     "beautifultable",
     "requests<2.26.0",
