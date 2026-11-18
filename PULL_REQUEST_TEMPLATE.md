@@ -1,4 +1,6 @@
-Fixes  ISSUE#xxx
+Signed-off-by: githubID email
+
+Fixes  ISSUE #xxx
 
 Changes:
 

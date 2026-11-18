@@ -1,33 +1,40 @@
 # common file patterns
 .DS_STORE
 .idea
+.vscode/*
 *.iml
 *.pyc
 __pycache__
+venv
+*.tar.gz
+*.db
+*.db-journal
+*.mdb
 *.jar
-*.class
-.project
-*.prefs
+.env
+Cargo.lock
 
 # excluded paths
-/arch/core/target/
-/arch/driver/federation/target/
-/arch/eggroll/egg/target/
-/arch/eggroll/meta-service/target/
-/arch/eggroll/roll/target/
-/arch/eggroll/storage-service/target/
-/arch/networking/proxy/target/
-/arch/driver/target/
-/arch/eggroll/target/
-/fate-serving/federatedml/target/
-/fate-serving/serving-server/target/
-/fate-serving/target/
-/fate-serving/fate-serving-core/target/
-/arch/networking/target/
-/arch/target/
+/python/dist/
+/rust/**/target/
+/build/
+/java/**/target/
 /fateboard/target/
+/fate_flow/logs/
+/fate_flow/jobs/
+/java/osx/deploy/osx
+/dist/
+/schemas/
 /data/
 /logs/
-/jobs/
-/audit/
-.vscode/*
+
+# logs
+**/logs/*
+
+# editable install
+PKG-INFO
+entry_points.txt
+dependency_links.txt
+requires.txt
+SOURCES.txt
+top_level.txt

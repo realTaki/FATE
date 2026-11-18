@@ -1,122 +1,119 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![CodeStyle](https://img.shields.io/badge/Check%20Style-Google-brightgreen)](https://checkstyle.sourceforge.io/google_style.html) [![Pinpoint Satellite](https://img.shields.io/endpoint?url=https%3A%2F%2Fscan.sbrella.com%2Fadmin%2Fapi%2Fv1%2Fpinpoint%2Fshield%2FFederatedAI%2FFATE)](https://github.com/mmyjona/FATE-Serving/pulls) [![Style](https://img.shields.io/badge/Check%20Style-Black-black)](https://checkstyle.sourceforge.io/google_style.html) 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![CodeStyle](https://img.shields.io/badge/Check%20Style-Google-brightgreen)](https://checkstyle.sourceforge.io/google_style.html) [![Style](https://img.shields.io/badge/Check%20Style-Black-black)](https://checkstyle.sourceforge.io/google_style.html) [![Build Status](https://travis-ci.org/FederatedAI/FATE.svg?branch=master)](https://travis-ci.org/FederatedAI/FATE)
+[![codecov](https://codecov.io/gh/FederatedAI/FATE/branch/master/graph/badge.svg)](https://codecov.io/gh/FederatedAI/FATE)
+[![Documentation Status](https://readthedocs.org/projects/fate/badge/?version=latest)](https://fate.readthedocs.io/en/latest/?badge=latest)
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/from-referrer/)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6308/badge)](https://bestpractices.coreinfrastructure.org/projects/6308)
+
 
 <div align="center">
   <img src="./doc/images/FATE_logo.png">
 </div>
 
 
-FATE (Federated AI Technology Enabler) is an open-source project initiated by Webank's AI Department to provide a secure computing framework to support the federated AI ecosystem. It implements secure computation protocols based on homomorphic encryption and multi-party computation (MPC). It supports federated learning architectures and secure computation of various machine learning algorithms, including logistic regression, tree-based algorithms, deep learning and transfer learning.
+FATE (Federated AI Technology Enabler) is the world's first industrial grade federated learning open source framework to enable enterprises and institutions to collaborate on data while protecting data security and privacy. 
+It implements secure computation protocols based on homomorphic encryption and multi-party computation (MPC). 
+Supporting various federated learning scenarios, FATE now provides a host of federated learning algorithms, including logistic regression, tree-based algorithms, deep learning and transfer learning.
 
-<https://fate.fedai.org>
+
+FATE is an open source project hosted by Linux Foundation. The [Technical Charter](https://github.com/FederatedAI/FATE-Community/blob/master/FATE_Project_Technical_Charter.pdf) sets forth the responsibilities and procedures for technical contribution to, and oversight of, the FATE (“Federated AI Technology Enabler”) Project. 
+
+<https://fate.readthedocs.io/en/latest>
+
+
+## Getting Started
+FATE can be deployed on a single node or on multiple nodes. Choose the deployment approach which matches your environment.
+[Release version can be downloaded here.](https://github.com/FederatedAI/FATE/wiki/Download)
+
+
+### Version >= 2.0
+### Standalone deployment
+
+- Deploying FATE on a single node via PyPI, pre-built docker images or installers. It is for simple testing purposes. Refer to this [guide](./deploy/standalone-deploy/).
+
+### Cluster deployment
+Deploying FATE to multiple nodes to achieve scalability, reliability and manageability.
+- [Cluster deployment by CLI](./deploy/cluster-deploy): Using CLI to deploy a FATE cluster.
+- [Docker-Compose deployment](./deploy/docker-compose): Using docker-compose to deploy FATE.
+
+### Quick Start
+- [Training Demo with Only FATE Installed From Pypi](doc/2.0/fate/ml)
+- [Training Demo with Both FATE AND FATE-Flow Installed From Pypi](doc/2.0/fate/quick_start.md)
+
+### Advanced Use
+- [Train & Predict for Homo Mode](./doc/2.0/fate/homo_quick_start.md)
+- [Run ML Launchers](./doc/README.md#run-ml-modulessince-v200)
+
+### More examples
+- [ML examples](examples/launchers)
+- [PipeLine examples](examples/pipeline)
+
+## Documentation
+
+### FATE Design
+- [Architecture](./doc/architecture/README.md): Building Unified and Standardized API for Heterogeneous Computing Engines Interconnection
+- [FATE Algorithm Components](./doc/2.0/fate/components/README.md): Building Standardized Algorithm Components for different Scheduling Engines
+- [OSX (Open Site Exchange)](./doc/2.0/osx/osx.md): Building Open Platform for Cross-Site Communication Interconnection
+- [FATE-Flow](https://github.com/FederatedAI/FATE-Flow/blob/main/doc/fate_flow.md): Building Open and Standardized Scheduling Platform for Scheduling Interconnection 
+- [PipeLine Design](https://github.com/FederatedAI/FATE-Client/blob/main/doc/pipeline.md): Building Scalable Federated DSL for Application Layer Interconnection And Providing Tools For Fast Federated Modeling
+- [RoadMap](./doc/images/roadmap.png)
+- [Paper & Conference](./doc/resources/README.md)
+
+### Develop Guide
+- [Dag Usage Guide](./doc/2.0/fate/dag.md)
+- [Component Develop Guide](./doc/develop_guide/component_guide.md)  
+
+
+## Related Repositories (Projects)
+- [KubeFATE](https://github.com/FederatedAI/KubeFATE): An operational tool for the FATE platform using cloud native technologies such as containers and Kubernetes.
+- [FATE-Flow](https://github.com/FederatedAI/FATE-Flow): A multi-party secure task scheduling platform for federated learning pipeline.
+- [FATE-Board](https://github.com/FederatedAI/FATE-Board): A suite of visualization tools to explore and understand federated models easily and effectively.
+- [FATE-Serving](https://github.com/FederatedAI/FATE-Serving): A high-performance and production-ready serving system for federated learning models.
+- [FATE-Cloud](https://github.com/FederatedAI/FATE-Cloud): An infrastructure for building and managing industrial-grade federated learning cloud services.
+- [EggRoll](https://github.com/WeBankFinTech/eggroll): A simple high-performance computing framework for (federated) machine learning.
+- [AnsibleFATE](https://github.com/FederatedAI/AnsibleFATE): A tool to optimize and automate the configuration and deployment operations via Ansible.
+- [FATE-Builder](https://github.com/FederatedAI/FATE-Builder): A tool to build package and docker image for FATE and KubeFATE.
+- [FATE-Client](https://github.com/FederatedAI/FATE-Client): A tool to enable fast federated modeling tasks for FATE.
+- [FATE-Test](https://github.com/FederatedAI/FATE-Test): An automated testing tool for FATE, including tests and benchmark comparisons.
+- [FATE-LLM](https://github.com/FederatedAI/FATE-LLM/blob/main/README.md) : A framework to support federated learning for large language models(LLMs).
+
+## Governance 
+
+[FATE-Community](https://github.com/FederatedAI/FATE-Community) contains all the documents about how the community members cooperate with each other. 
+
+- [GOVERNANCE.md](https://github.com/FederatedAI/FATE-Community/blob/master/GOVERNANCE.md) documents the governance model of the project. 
+- [Minutes](https://github.com/FederatedAI/FATE-Community/blob/master/meeting-minutes) of working meetings
+- [Development Process Guidelines](https://github.com/FederatedAI/FATE-Community/blob/master/FederatedAI_PROJECT_PROCESS_GUIDELINE.md) 
+- [Security Release Process](https://github.com/FederatedAI/FATE-Community/blob/master/SECURITY.md) 
+
 
 ## Getting Involved
 
-*  Join our maillist [Fate-FedAI Group IO](https://groups.io/g/Fate-FedAI). You can ask questions and participate in the development discussion.
+### Contributing
+FATE is an inclusive and open community. We welcome developers who are interested in making FATE better! Contributions of all kinds are welcome. Please refer to the general [contributing guideline](https://github.com/FederatedAI/FATE-Community/blob/master/CONTRIBUTING.md) of all FATE projects and the contributing guideline of each repository.
 
-*  For any frequently asked questions, you can check in [FAQ](https://github.com/FederatedAI/FATE/wiki/FATE-FAQ).  
+### Mailing list 
 
-*  Please report bugs by submitting [issues](https://github.com/FederatedAI/FATE/issues). 
-
-*  Submit contributions using [pull requests](https://github.com/FederatedAI/FATE/pulls)
-
-
-## Federated Learning Algorithms In FATE
-FATE already supports a number of federated learning algorithms, including vertical federated learning, horizontal federated learning, and federated transfer learning. More details are available in [federatedml](./federatedml).
+Join the FATE user [mailing list](https://groups.io/g/Fate-FedAI), and stay connected with the community and learn about the latest news and information of the FATE project. Discussion and feedback on the FATE project are welcome.
 
 
-## Install
+### Bugs or feature requests
 
-FATE can be installed on Linux or Mac. Now, FATE can support：
+File bugs and features requests via the [GitHub issues](https://github.com/FederatedAI/FATE/issues). If you need help, ask your questions via the mailing list.
 
-* Native installation: standalone and cluster deployments;
+### Contact emails
 
-* KubeFATE installation:
+Maintainers: FedAI-maintainers @ groups.io
 
-	- Multipal parties deployment by docker-compose, which for devolopment and test purpose;
+Security Response Committee: FATE-security @ groups.io
 
-	- Cluster (multi-node) deployment by Kubernetes
+### Twitter
 
-### Native installation: 
-Software environment :jdk1.8+、Python3.6、python virtualenv、mysql5.6+、redis-5.0.2
+Follow us on twitter [@FATEFedAI](https://twitter.com/FateFedAI)
 
-##### Standalone
-FATE provides Standalone runtime architecture for developers. It can help developers quickly test FATE. Standalone support two types of deployment: Docker version and Manual version. Please refer to Standalone deployment guide: [standalone-deploy](./standalone-deploy/)
-
-##### Cluster
-FATE also provides a distributed runtime architecture for Big Data scenario. Migration from standalone to cluster requires configuration change only. No algorithm change is needed. 
-
-To deploy FATE on a cluster, please refer to cluster deployment guide: [cluster-deploy](./cluster-deploy).
-
-##### Get source
-```shell
-git clone --recursive git@github.com:FederatedAI/FATE.git
-```
-
-### KubeFATE installation:
-Using KubeFATE, FATE can be deployed by either docker-compose or Kubernetes:
-
-* For development or testing purposes, docker-compose is recommended. It only requires Docker enviroment. For more detail, please refer to [Deployment by Docker Compose](https://github.com/FederatedAI/KubeFATE/tree/master/docker-deploy).
-
-* For a production or a large scale deployment, Kubernetes is recommended as an underlying infrastructure to manage FATE system. For more detail, please refer to [Deployment on Kubernetes](https://github.com/FederatedAI/KubeFATE/blob/master/k8s-deploy).
-
-More instructions can be found in [KubeFATE](https://github.com/FederatedAI/KubeFATE).
-
-## Running Tests
-
-A script to run all the unittests has been provided in ./federatedml/test folder. 
-
-Once FATE is installed, tests can be run using:
-
-> sh ./federatedml/test/run_test.sh
-
-All the unittests shall pass if FATE is installed properly. 
-
-## Example Programs
-
-### Quick Start
-
-We have provided a python script for quick starting modeling task. This scrip is located at ["examples/federatedml-1.x-examples"](./examples/federatedml-1.x-examples)
-
-#### Standalone Version
-1. Start standalone version hetero-lr task (default)
-> python quick_run.py
+### FAQ
+https://github.com/FederatedAI/FATE/wiki
 
 
-#### Cluster Version
-
-1. Host party:
-> python quick_run.py -r host
-
-This is just uploading data
-
-2. Guest party:
-> python quick_run.py -r guest
-
-The config files that generated is stored in a new created folder named **user_config**
-
-#### Start a Predict Task
-Once you finish one training task, you can start a predict task. You need to modify "TASK" variable in quick_run.py script as "predict":
-```
-# Define what type of task it is
-# TASK = 'train'
-TASK = 'predict'
-```
-Then all you need to do is running the following command:
-> python quick_run.py
-
-Please note this works only if you have finished the trainning task.
-
-###  Obtain Model and Check Out Results
-We provided functions such as tracking component output models or logs etc. through a tool called fate-flow. The deployment and usage of fate-flow can be found [here](./fate_flow/README.md)
-
-
-## Doc
-### API doc
-FATE provides some API documents in [doc-api](./doc/api/), including federatedml, eggroll, federation.
-### Develop Guide doc
-How to develop your federated learning algorithm using FATE? you can see FATE develop guide document in [develop-guide](./doc/develop_guide.md)
-### Other doc
-FATE also provides many other documents in [doc](./doc/). These documents can help you understand FATE better.
-### License
+## License
 [Apache License 2.0](LICENSE)
 

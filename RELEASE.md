@@ -1,274 +1,110 @@
-# Release 1.1.1
-## Major Features and Improvements
-* Add cluster deployment support based on ubuntu operating system。
-* Add union component which support data merging. 
-* Support indicating partial columns in Onehot Encoder
-* Support intermediate data cleanup after the task ends
-* Accelerated Intersection
-* Optimizing the deployment process
+## Release 2.2.0
+### Major Features and Improvements
+> Deployment
+* Upgrade from Python 3.8 to Python 3.10
+* Upgrade the PyTorch version to 2.x
 
 
-## Bug Fixes
-* Fix a bug of secureboost' early stop 
-* Fix a bug in download api
-* Fix bugs of spark-backend
+## Release 2.1.1
+### Major Features and Improvements
+> Component
+* Support server model saving in Homo-NN
+
+> ML
+* aggregator support aggregation of torch.bfloat16 data type
 
 
-# Release 1.1
-## Major Features and Improvements
->FederatedML
-* Provide a general algorithm framework for homogeneous federated learning, which supports Secure Aggregation 
-* Add homogeneous Deep Neural Network
-* Add heterogeneous Linear Regression
-* Add heterogeneous Poisson Regression
-* Support multi-host in heterogeneous Logistic Regression
-* Support multi-host in heterogeneous Linear Regression
-* Support multi-host Intersection
-* Accelerated Intersection by usage of cache
-* Reconstruct heterogeneous Generalized Linear Models Framework
-* Support affine homomorphic encryption in heterogeneous SecureBoost
-* Support input data with missing value in heterogeneous SecureBoost
-* Support evaluation during training on both train and validate data
-* Add spark as computing engine
+## Release 2.1.0
+### Major Features and Improvements
+> Arch
+* Some bugs fixed for spark computing engine
 
->FATE-Flow
-* Upload and Download support CLI for querying job status
-* Support for canceling waiting job
-* Support for setting job timeout
-* Support for storing a job scheduling log in the job log folder
-* Add authentication control Beta version, including component, command, role
+> Component
+* Unified IO keys naming format for all components
+* Add LLMLoader to support running FATE-LLM v2.0 with pipeline
 
-# Release 1.0.2
-## Major Features and Improvements
-* Python and JDK environment are required only for running standalone version quick experiment
-* Support cluster version docker deployment
-* Add deployment guide in Chinese
-* Standalone version job for quick experiment is supported when cluster version deployed. 
-* Python service log will remain for 14 days now.
+> OSX
+* Compatible with eggroll-v2.x
 
 
-## Bug Fixes
-* Fix bugs of multi-host support in Cross-Validation
-* Fix bugs of showing up evaluation metrics when both train and eval exist
-* Add links for each algorithm module in FederatedML home page README
+## Release 2.0.0
+### Major Features and Improvements
+> Arch 2.0：Building Unified and Standardized API for Heterogeneous Computing Engines Interconnection
+* Introduce `Context` to manage useful APIs for developers, such as `Distributed Compting`, `Federation`, `Cipher`, `Tensor`, `Metrics`,  and `IO`.
+* Introduce `Tensor` data structure to handle local and distributed matrix operation, with built-in heterogeneous acceleration support. 
+  * abstracted PHETensor, smooth switch between various underlying PHE implementations through standard interface
+* Introduce `DataFrame`, a 2D tabular data structure for data io and simple feature engineering
+  * add data block manager to support mixed-type columns & feature anonymization
+  * added 30+ operator interfaces for statistics, including comparison, indexing, data binning, and transformation, etc
+* Refactor `Federation`, a unified interface for federated computing. We provide a unified Serdes control and more user-friendly api.
+* Introduce `Config`, a unified configuration for FATE, including safety restrictions, system configuration, and algorithm configuration
+* Refactor `logger`, customizable logging for different use cases and flavors.
+* Introduce `Launcher`, a simple tool for federated program execution, especially useful for standalone and local debugging
+* Framework: PSI-ECDH protocol support, single entry for histogram statistical computation 
+* Deepspeed integration: support distributed training using deepspeed with Eggroll.
+* Protocol: Support for SSHE(mpc and homomophic encryption mixed protocol), ECDH, Secure Aggregation protocols
+* Experimental Integrate `Crypten` for SMPC support, more protocols and features will be added in the future
 
+> Components 2.0: Building Standardized Algorithm Components for different Scheduling Engines
+* Introduce components toolbox to wrap ML modules as standard executable programs
+* spec and loader expose clear API for smooth internal extension and external system integration
+* Provide several cli tools to interact and execute components
+* Input-Output: Further decoupling of FATE-Flow, providing standardized black-box calling processes 
+* Component Definition: Support for typing-based definition, automatic checking for component parameters, support for multiple types of data and model input and output, in addition to multiple inputs
 
-# Release 1.0.1
-## Bug Fixes
-* Fix bugs for evaluation data type 
-* Fix bugs for feature binning to take abnormal values into consideration
-* Fix bugs for train and eval
-* Fix bugs in binning merge
-* Fix bugs in Samplers
-* Fix federated feature selection feature filter bug
-* Support upload file  in version argument
-* Support get serviceRoleName from configuration
+> ML 2.0: Major functionality migration from FATE-v1.x, decoupling call hierarchy
+* Data preprocessing: Added DataFrame Transformer; Reader, Union and DataSplit migration completed
+* Feature Engineering: Migrated HeteroFederatedBinning, HeteroFeatureSelection, DataStatistics, Sampling, FeatureScale and Pearson Correlation
+* Federated Training Migrated: HeteroSecureBoost, HomoNN, HeteroCoordinatedLogisticRegression, HeteroCoordinatedLinearRegression, SSHE-LogisticRegression and SSHE-LinearRegression
+* Federated Training Added: 
+  * SSHE-HeteroNN: based on mpc and homomorphic encryption mixed protocal
+  * FedPASS-HeteroNN: based on fedpass protocol
 
+> Algorithm Performance Improvements: (Comparison with FATE-v1.11.*)
+* PSI (Privacy Set Intersection): tested on a dataset of 100 million with an intersection result of 100 million, 1.8+ times of FATE-v1.11.4
+* Hetero-SSHE-LR: tested on data of guest 10w * 30 dimensions and host 10w * 300 dimensions, 4.3+ times of FATE-v1.11.4
+* Hetero-NN(Based on FedPass Protocol):  tested on data of guest 10w * 30 dimensions and host 10w * 300 dimensions, basically consistent with the plaintext performance, 143+ times of FATE-v1.11.4 
+* Hetero-Coordinated-LR: tested on data of guest 10w * 30 dimensions and host 10w * 300 dimensions, 1.2+ times of FATE-v1.11.4
+* Hetero-Feature-Binning: tested on data of guest 10w * 30 dimensions and host 10w * 300 dimensions, 1.5+ times of FATE-v1.11.4
 
-# Release 1.0
-## Major Features and Improvements
->This version includes two new products of FATE, FATE-Board, and FATE-Flow respectively, FATE-Board as a visual tool for federation modeling, and FATE-Flow is an end to end pipeline platform for federated learning. This version contains important improvements to the FederatedML, which better tracks the running progress of federated learning algorithms.
+> OSX(Open Site Exchange) 1.0: Building Open Platform for Cross-Site Communication Interconnection 
+* Implement the transmission interface in accordance with the “ Technical Specification for Financial Industry Privacy Computing Interconnection Platform”,The transmission interface is compatible with FATE 1.X version and  FATE 2.X version
+* Supports GRPC synchronous and streaming transmission, supports TLS secure transmission protocol, and is compatible with FATE1.X rollsite components
+* Supports Http 1.X protocol transmission and TLS secure transmission protocol
+* Support message queue mode transmission, used to replace rabbitmq and pulsar components in FATE 1.X
+* Supports Eggroll and Spark computing engines
+* Supports networking as an Exchange component, with support for FATE 1.X and FATE 2.X access
+* Compared to the rollsite component, it improves the exception handling logic during transmission and provides more accurate log output for quickly locating exceptions.
+* The routing configuration is basically consistent with the original rollsite, reducing the difficulty of porting
+* Supports HTTP interface modification of routing tables and provides simple permission verification
+* Improved network connection management logic, reduced connection leakage risk, and improved transmission efficiency
+* Using different ports to handle access requests both inside and outside the cluster, facilitating the adoption of different security policies for different ports
 
->FATE-Board
-* Federated Learning Job DashBoard
-* Federated Learning Job Visualisation
-* Federated Learning Job Management
-* Real-time Log Panel
+> FATE Flow 2.0: Building Open and Standardized Scheduling Platform for Scheduling Interconnection
+* Adapted to new scalable and standardized federated DSL IR
+* Built an interconnected scheduling layer framework, supported the BFIA protocol
+* Optimized process scheduling, with scheduling separated and customizable, and added priority scheduling
+* Optimized algorithm component scheduling，support container-level algorithm loading， enhancing support for cross-platform heterogeneous scenarios
+* Optimized multi-version algorithm component registration, supporting registration for mode of components
+* Federated DSL IR extension enhancement: supports multi-party asymmetric scheduling
+* Optimized client authentication logic, supporting permission management for multiple clients
+* Optimized RESTful interface, making parameter fields and types, return fields, and status codes clearer
+* Added OFX(Open Flow Exchange) module: encapsulated scheduling client to allow cross-platform scheduling
+* Supported the new communication engine OSX, while remaining compatible with all engines from FATE Flow 1.x
+* Decoupled the System Layer and the Algorithm Layer, with system configuration moved from the FATE repository to the Flow repository
+* Published FATE Flow package to PyPI and added service-level CLI for service management
+* Migrated major functionality from FATE Flow 1.x
 
+> Fate-Client 2.0: Building Scalable Federated DSL for Application Layer Interconnection And Providing Tools For Fast Federated Modeling.
+* Introduce new scalable and standardized federated DSL IR(Intermediate Representation) for federated modeling job
+* Compile python client to DSL IR
+* Federated DSL IR extension enhancement: supports multi-party asymmetric scheduling
+* Support mutual translation between Standardized Fate-2.0.0 DSL IR and BFIA protocol
+* Support using components with BFIA protocol through adapter mode
+* Migrated Flow CLI and Flow SDK
 
->FATE-FLOW
- * DAG defines Pipeline
- * Federated Multi-party asymmetric DSL parser
- * Federated Learning lifecycle management
- * Federated Task collaborative scheduling
- * Tracking for data, metric, model and so on
- * Federated Multi-party model management
- 
->FederatedML
-* Update all algorithm modules running mechanism for supporting federated modeling pipeline by FATE-Flow
-* Intermediate statistic result callback is available and visualizable in FATE-Board for all algorithm modules.
-* Support Nesterov Momentum SGD Optimizer
-* Add Homomorphic Encryption Scheme Based on Affine Transforms
-* Support sparse input-format in federated feature binning
-* Update evaluation metrics, such as ks, roc, gain, lift curve and so on 
-* Update algorithm's parameter-define class
+> Fate-Test: FATE Automated Testing Tool
+* Migrated automated testing for functionality, performance, and correctness
 
->FATE-Serving
-* Add online federated modeling pipeline DSL parser for online federated inference
-
-
-# Release 0.3.2
-## Bug Fixes
-* Adjust the Logic of Online Service Module
-* Adjust the log format
-* Replace the grpc connection pool of the online service module
-* Improving Model Processing Details
-
-
-# Release 0.3.1
-## Bug Fixes
-* fix feature scale bugs in v0.3
-* fix federated feature selection bugs in v0.3
-
-# Release 0.3
-
-## Major Features and Improvements
-
-> FederatedML
-* Support OneVsALL for multi-label classification task
-* Add trash-recycle in Hetero Logistic Regression
-* Add numeric stable for sigmoid and log_logistic function.
-* Support different calculation mode in Hetero Logistic Regression and Hetero SecureBoost
-* Decouple Federated Feature Binning and Federated Feature Selection
-* Add feature importance calculation in Hetero SecureBoost
-* Add multi-host in Hetero SecureBoost
-* Support tag:value sparse format input data 
-* Support output intersect-id with feature-instance in Intersection
-* Support OneHot encoding module.
-* Support bucket binning for Federated Feature Binning.
-* Support add, sub, mul, div ,gt, lt ,eq, etc mathematical operator on Fixed-Point data
-* Add authority validation for parameter setting
-
-> FATE-Serving
-* Add multi-level cache for multi-party inference result
-* Add startInferceJob and getInferenceResult interfaces to support the inference process asynchronization
-* Normalized inference return code
-* Real-time logging of inference summary logs and inferential detail logs
-* Improve the loading of the pre and post processing adapter and data access adapter for host
-
-> EggRoll
-* New computing and storage APIs
-* Stability optimizations
-* Performance optimizations
-* Storage usage improvements
-
-> Example
-* Add Mini-FederatedML test task example
-* Using task manager to submit distributed task for current examples  
-
-## Bug Fixes and Other Changes
-* fix detect onehot max column overflow bug.
-* fix dataio dense format not reading host data header bug.
-* fix bugs of call of statistics function
-* fix bug for federated feature selection that at least one feature remains for each party
-* Not allowing so small batch size in LR module for safety consideration.
-* fix naming error in federated feature selection module.
-* Fix the bug of automated publishing model information in some extreme cases
-* Fixed some overflow bugs in fixed-point data
-* fix many other bugs.
-
-
-# Release 0.2
-
-## Major Features and Improvements
-> WorkFlow
-* Add Model PipleLine
-* Add Hetero Federated Feature Binning workflow
-* Add Hetero Federated Feature Selection workflow
-* Add hetero dnn workflow
-* Add intersection operator before train, predict and cross_validation
-
-> FederatedML
-* Support svm-light sparse format inputdata 
-* Support tag sparse format inputdata
-* Add Hetero Federated Feature Binning
-* Add Hetero Federated Feature Selection
-* Add Feature Scaler: MinMaxScaler & StandardScaler
-* Add Feature Imputer for missing value filling
-* Add Data Statistic for datainstance
-* Support encoding and main calculation role configurable for RAW Intesection 
-* Add Sampler: RandomSampler & StratifiedSampler 
-* Support regression in SecureBoost
-* Support regression evaluation   
-* Support Decentralized FTL
-* Add feature extracting by DNN
-* Change Model Format to ProtoBuf
-* Add abnormal parameter detection
-* Add abnormal input data detection
-
-
-> FATE-Serving(An online inference for federated learning models)	
-*	Dynamic Loading Federated Learning Models.
-*	Real-time Prediction Using Federated Learning Models.
-
-> Model Management
-*	Versioning
-*	Reproducibility
-*	Queries, Search
-
-> Task Manager
-*  Add Load File/ Download File
-*  Add Import ID from Local File
-*  Add Start workflow
-*  Add workflow Job Queue
-*  Add Query Job Status
-*  Add Get Runtime conf
-*  Add Delete Task
-
-> EggRoll
-*  Add Node Manager for multiprocessor to improve distributed computing performance
-*  Add C++ overwrite storage service
-*  Add eggroll cleanup API
-
-> Deploy 
-* Add auto-deploy 
-* Improved deployment documentation
-
-> Example
-* Add Hetero Federated Feature Binning example
-* Add Hetero Federated Feature Selection example
-* Add Hetero DNN example
-* Add toy example
-* Add task manager examples
-* Add Serving example
-
-## Bug Fixes and Other Changes
-* Hetero-LR Minibath bugfixed
-* Gradient Average bugfixed
-* One-second latency for proxy bugfixed
-* Training flowid bugfixed
-* Many bugfixes
-* Many performance improvements
-* Many documentation fixes
-
-# Release 0.1
-
-Initial release of FATE.
-
-## Major Features
-> WorkFlow
-*	Support Intersection workflow
-*	Support Train workflow
-*	Support Predict workflow
-*	Support Validation workflow
-*	Support Model Load and Save workflow
-
-> FederatedML
-*	Support Distributed Secure Intersection and Raw Intersection for Sample Alignment
-*   Support Distributed Homogeneous LR and Heterogeneous LR
-*   Support Distributed SecureBoost
-*   Support Distributed Secure Federated Transfer Learning
-*   Support Binary and Multi-Class Evaluation
-*   Support Model Cross-Validation
-*	Supprt Mini-Batch
-*   Support L1, L2 Regularizers
-*   Support Multi-Party Homogeneous FederatedAggregator
-*	Support Multi-Party Heterogeneous FederatedAggregator
-*	Support Partially Homomorphic Encryption MPC Protocol
-	
-
-> Architecture
-* Initial release of Computing APIs
-* Initial release of Storage APIs
-* Initial release of Federation APIs
-* Initial release of cross-site network communication (i.e. 'Federation')
-* Initial release of Standalone runtime, including computing engine and k-v storage
-* Initial release of Distributed runtime, including distributed computing engine, distributed k-v storage, metadata management and intra-site/cross-site network communication
-* Support cross-site heterogenous infrastructure
-* Initial support of modeling and inference
-
-  
-> Deploy
-*	Support standalone (docker & manual) deployment
-*   Support cluster deployment
-
+> Easy Deploy
+* Supports installation of FATE by PyPi
