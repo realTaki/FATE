@@ -21,7 +21,7 @@ import fate
 # Base requirements
 install_requires = [
     "lmdb==1.4.1",
-    "torch==2.3.1",
+    "torch==2.12.1+cpu",
     "fate_utils",
     "pydantic==1.10.12",
     "cloudpickle==2.1.0",
