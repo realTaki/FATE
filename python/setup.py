@@ -27,7 +27,7 @@ install_requires = [
     "cloudpickle==2.1.0",
     "click",
     "ruamel.yaml==0.16",
-    "scikit-learn==1.4.1.post1",
+    "scikit-learn==1.5.0",
     "numpy<2.0.0",
     "pandas",
     "transformers==5.10.1",

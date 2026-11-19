@@ -13,7 +13,7 @@ transformers==5.10.1
 accelerate==1.15.0
 beautifultable
 requests<2.26.0
-scikit-learn==1.4.1.post1
+scikit-learn==1.5.0
 omegaconf
 rich==13.7.1
 opentelemetry-api
