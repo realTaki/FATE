@@ -23,7 +23,7 @@ install_requires = [
     "lmdb==1.4.1",
     "torch==2.13.0",
     "fate_utils",
-    "pydantic==1.10.12",
+    "pydantic==1.10.27",
     "cloudpickle==2.1.0",
     "click",
     "ruamel.yaml==0.16",
