@@ -30,7 +30,7 @@
         <jackson.version>2.14.1</jackson.version>
         <commons-cli.version>1.5.0</commons-cli.version>
         <skipTests>true</skipTests>
-        <log4j2.version>2.17.2</log4j2.version>
+        <log4j2.version>2.25.5</log4j2.version>
         <sl4j.version>1.7.30</sl4j.version>
         <zookeeper.version>3.9.1</zookeeper.version>
         <jetty.version>9.4.52.v20230823</jetty.version>
